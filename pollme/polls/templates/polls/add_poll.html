@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_staff %}
+    <div class="container">
+        <div class="row center">
+            <div class="col-md-6 offset-md-3">
+                <h2>Create new poll</h2>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Add Poll</button>
+                    <a class="btn btn-warning" href="{% url 'polls:list' %}" role="button">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="container text-center mt-5">
+        <h2 class="text-black fw-bold">Sorry, but you don't have permission to do that!</h2>
+        <h3 class="text-black fw-bold">Only an admin has permission to create a poll.</h3>
+        <a href="{% url 'polls:list' %}" class="btn btn-primary mt-3" role="button">Go Back</a>
+    </div>
+    {% endif %}
+{% endblock %}
